@@ -1,0 +1,74 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  relationMode ="prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+/// <NextAuth.js Models Start>
+model Account {
+  id                 Int       @id @default(autoincrement())
+  userId             Int
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?   
+  access_token       String?   
+  expires_at         Int?      
+  token_type         String?   
+  scope              String?   
+  id_token           String?   
+  session_state      String?   
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int       @id @default(autoincrement())
+  sessionToken String    @unique
+  userId       Int
+  expires      DateTime
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String?   
+  email         String?   @unique
+  emailVerified DateTime? 
+  image         String?   
+  accounts      Account[]
+  sessions      Session[]
+  // Add any additional user fields here
+}
+
+model VerificationToken {
+  identifier String
+  token      String    @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+/// <NextAuth.js Models End>
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}

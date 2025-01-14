@@ -1,18 +1,14 @@
-import type { Config } from "tailwindcss";
+// tailwind.config.js
 
-export default {
+module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    './app/**/*.{js,ts,jsx,tsx}', // Include all files in the 'app' directory
+    './components/**/*.{js,ts,jsx,tsx}', // Include all files in the 'components' directory
+    './pages/**/*.{js,ts,jsx,tsx}', // If using the 'pages' directory
+    './public/**/*.html', // Include HTML files in 'public' (if any)
   ],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
+    extend: {},
   },
   plugins: [],
-} satisfies Config;
+}
